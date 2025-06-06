@@ -1,7 +1,28 @@
+#services:
+#  web:
+#    image: nginx
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ./website:/usr/share/nginx/html:ro
+#
+version: "3.8"
+
 services:
-  web:
-    image: nginx
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - ./website:/var/www/website
+    working_dir: /var/www/website
+
+  nginx:
+    image: nginx:latest
     ports:
       - "8080:80"
     volumes:
-      - ./website:/usr/share/nginx/html:ro
+      - ./website/public:/var/www/website/public
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php

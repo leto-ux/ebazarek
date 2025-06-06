@@ -1,3 +1,41 @@
+# Composer
+/vendor/
+composer.lock
+
+# Symfony Cache & Logs
+/var/cache
+/var/logs/
+/var/log
+
+/.env.local
+.env.*.local
+.env.test
+
+# PHPStorm / VSCode
+.idea/
+/.vscode/
+
+# Docker
+docker/php/.phpunit.result.cache
+
+# PHPUnit
+.phpunit/result/cache
+/phpunit.xml 
+
+# System
+.DS_Store
+Thumbs.db
+
+# Symfony builin
+/public/bundles/
+/node_modules
+
+# Symfony Flex
+.symfony/
+
+# Build Artifacts
+/build/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
