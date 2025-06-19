@@ -1,3 +1,17 @@
+html {
+    height: 100%;
+    color: #e5e5e5;
+    background-color: #212121;
+}
+
+body {
+    height: 100%;
+    color: #e5e5e5;
+    /* background-color: #212121; */
+    background-image: url( "../graphic/bg.jpg" ) !important;
+    background-size: 100% auto;
+}
+
 .footer {
     position: fixed;
     left: 0;
