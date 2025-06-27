@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /
+
+# Do not overwrite if file/dir already exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite for paths in $_PAGE
+RewriteRule ^([a-zA-Z0-9-_]+)$ index.php?page=$1 [NC,L,QSA]
+# RewriteRule ^([^/]+)$ index.php?page=$1 [L,QSA]

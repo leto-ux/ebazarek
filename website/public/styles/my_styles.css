@@ -1,15 +1,17 @@
 html {
     height: 100%;
+    width: 100%;
     color: #e5e5e5;
     background-color: #212121;
 }
 
 body {
     height: 100%;
+    width: 100%;
     color: #e5e5e5;
-    /* background-color: #212121; */
-    background-image: url( "../graphic/bg.jpg" ) !important;
-    background-size: 100% auto;
+    background-color: #212121;
+    /* background-image: url( "../graphic/bg.jpg" ) !important;
+background-size: 100% auto; */
 }
 
 .footer {
@@ -20,4 +22,20 @@ body {
     background-color: #213769;
     color: white;
     text-align: center;
+}
+
+.fade-img {
+    mask-image:
+    linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%),
+    linear-gradient(to left, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image:
+    linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%),
+    linear-gradient(to left, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-composite: destination-in;
+}
+
+#go_to_store {
+    margin-top: 15px;
+    padding: 20px;
 }
