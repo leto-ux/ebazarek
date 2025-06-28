@@ -11,7 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 include( "config.php" );
 include( "helpers.php" );
 
-$allowed_pages = [ 'home', 'offers', 'error' ];
+$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'error' ];
 
 
 if( isset( $_GET['page'])

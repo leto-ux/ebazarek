@@ -1,24 +1,11 @@
-html {
-    height: 100%;
-    width: 100%;
+html, body {
+    margin: 0;
+    padding: 0;
     color: #e5e5e5;
     background-color: #212121;
-}
-
-body {
-    height: 100%;
-    width: 100%;
-    color: #e5e5e5;
-    background-color: #212121;
-    /* background-image: url( "../graphic/bg.jpg" ) !important;
-background-size: 100% auto; */
 }
 
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     background-color: #213769;
     color: white;
     text-align: center;
@@ -36,6 +23,7 @@ background-size: 100% auto; */
 }
 
 #go_to_store {
-    margin-top: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 20px;
 }

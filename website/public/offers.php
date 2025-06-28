@@ -1,4 +1,4 @@
 <?php
 
-print TwigHelper::getInstance() -> render( 'offers.html' );
+print TwigHelper::getInstance() -> render( 'offers.html', [] );
 ?>

@@ -18,35 +18,64 @@
         crossorigin="anonymous">
         </script>
     </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="/home"> eBazarek </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav" id="menu-buttons">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/offers">Oferty</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">O nas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Opinie klientów</a>
-                    </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- <button id="toggle_theme"> Zmień motyw </button>
-<script src="/js/toggle_theme.js"></script> -->
-        <div class="container mb-6" >
-        {% block content %}{% endblock %}
-        </div>
+    <body class="d-flex flex-column min-vh-100">
+        <main class="flex-grow-1">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/home"> eBazarek </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav" id="menu-buttons">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/offers">Oferty</a>
+                            </li>
+                            {% if _session.id %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/seller">Dodaj ofertę</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">O nas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/opinions">Opinie klientów</a>
+                            </li>
+                        </ul>
 
-        <footer class="footer mt-auto py-3" style="background-color: #213769" >
+                        <div class="ms-auto d-flex align-items-center">
+                            {% if _session.id %}
+                            <div class="text-white">
+                                Witaj {{ _session.login }}
+                            </div>
+                            {% else %}
+                            <form action="/login.php" method="POST" class="d-flex flex-column flex-sm-row w-100 gap-2">
+                                <div class="me-2">
+                                    <input type="text" name="login" class="form-control" placeholder="Login"
+                                        aria-label="login" style="width: 170px;">
+                                </div>
+                                <div class="me-2">
+                                    <input type="password" name="password" class="form-control" placeholder="Hasło"
+                                        aria-label="password" style="width: 170px;">
+                                </div>
+                                <div>
+                                    <button class="btn btn-info" type="submit" style="width: 120px;">Zaloguj się</button>
+                                </div>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+            <!-- <button id="toggle_theme"> Zmień motyw </button>
+<script src="/js/toggle_theme.js"></script> -->
+            <div class="container mb-5" >
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        <footer class="footer py-3" style="background-color: #213769" >
             <div class="container">
                 <span class="text-muted" style="color: #eeddcc">
                     WWW i Języki Skryptowe - eBazarek - Wykonali M.Kołodziej i D.Stasielak
