@@ -44,18 +44,21 @@
                             </li>
                         </ul>
 
-                        <div class="ms-auto d-flex align-items-center">
-                            {% if _session.id %}
-                            <div class="text-white">
-                                Witaj {{ _session.login }}
+                        <div class="ms-auto d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
+                        {% if _session.id %}
+                            <div class="d-flex align-items-center">
+                                <span>Witaj {{ _session.login }}!</span>
                             </div>
-                            {% else %}
-                            <form action="/login.php" method="POST" class="d-flex flex-column flex-sm-row w-100 gap-2">
-                                <div class="me-2">
+                            <div> <a href="/logout">
+                                <button class="btn btn-info" type="submit" style="width: 120px;">Wyloguj się</button>
+                            </a> </div>
+                        {% else %}
+                            <form action="/" method="POST" class="d-flex flex-column flex-sm-row gap-2">
+                                <div>
                                     <input type="text" name="login" class="form-control" placeholder="Login"
                                         aria-label="login" style="width: 170px;">
                                 </div>
-                                <div class="me-2">
+                                <div>
                                     <input type="password" name="password" class="form-control" placeholder="Hasło"
                                         aria-label="password" style="width: 170px;">
                                 </div>
@@ -63,9 +66,8 @@
                                     <button class="btn btn-info" type="submit" style="width: 120px;">Zaloguj się</button>
                                 </div>
                             </form>
-                            {% endif %}
+                        {% endif %}
                         </div>
-
                     </div>
                 </div>
             </nav>
