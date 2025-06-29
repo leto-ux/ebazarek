@@ -12,22 +12,26 @@ include( "config.php" );
 include( "helpers.php" );
 
 // login
-$login = $_POST[ 'login' ] ?? '';
-$password = $_POST[ 'password' ] ?? '';
+if( isset( $_POST['login'] ) && isset( $_POST['password'] )){
+    $login = $_POST[ 'login' ] ?? '';
+    $password = $_POST[ 'password' ] ?? '';
 
-$stmt = DB::getInstance() -> prepare( "SELECT * FROM Users WHERE login = :login" );
-$stmt -> execute([ ':login' => $login ]);
-$user = $stmt -> fetch( PDO::FETCH_ASSOC );
+    $stmt = DB::getInstance() -> prepare( "SELECT * FROM Users WHERE login = :login" );
+    $stmt -> execute([ ':login' => $login ]);
+    $user = $stmt -> fetch( PDO::FETCH_ASSOC );
 
-if( $user && hash( 'sha256', $password ) === $user[ 'pass_hash' ]){
-    $_SESSION[ 'id' ] = $user[ 'UserID' ];
-    $_SESSION[ 'login' ] = $user[ 'login' ];
-    TwigHelper :: getInstance() -> addGlobal( '_session', $_SESSION );
-    header( 'Location: /home' );
+    if( $user && hash( 'sha256', $password ) === $user[ 'pass_hash' ]){
+        $_SESSION[ 'id' ] = $user[ 'UserID' ];
+        $_SESSION[ 'login' ] = $user[ 'login' ];
+        TwigHelper :: getInstance() -> addGlobal( '_session', $_SESSION );
+        header( 'Location: /home' );
+    } else {
+        TwigHelper :: addMsg( 'Błędy login lub hasło', 'error' );
+        //header( 'Location: /home' );
+    }
 }
 
-
-$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'error' ];
+$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'panel', 'error' ];
 
 if( isset( $_GET['page'])
     && $_GET['page'] )
@@ -41,7 +45,11 @@ if( isset( $_GET['page'])
     } else {
         print TwigHelper::getInstance() -> render( 'error.html', []);
     }
-} elseif( !isset( $_GET['page'] )) {
+} elseif( defined("LOCATION") )
+{
+    include( LOCATION . '.php' );
+} elseif( !isset( $_GET['page'] ))
+{
     include( 'home.php' );
 }
 
