@@ -83,3 +83,49 @@ html, body {
 .card .col-md-8 {
     height: 100%;
 }
+
+
+/* --- Równe karty z sztywnym rozmiarem --- */
+.offer-card {
+    height: 340px; /* pełna wysokość kafelka */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- Obrazek w karcie --- */
+.offer-card .card-img-top {
+    height: 160px;
+    width: 100%;
+    object-fit: contain;
+    background-color: #191919;
+}
+
+/* --- Opis skrócony --- */
+.offer-card-description {
+    font-size: 0.875rem;
+    color: #adb5bd;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Pokazuje max 3 linijki */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Tekst ceny --- */
+.offer-card .card-text.mt-auto {
+    font-size: 1.1rem;
+    color: #0d6efd;
+    font-weight: bold;
+    margin-top: auto;
+}
+
+/* --- Naprawa wysokości w Bootstrapie dla .col i .card --- */
+.row > .col {
+    display: flex;
+}
+.row > .col > .card {
+    flex: 1 1 auto;
+}

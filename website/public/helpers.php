@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('IN_INDEX')) { exit("This file can only be included in index.php."); }
+// if (!defined('IN_INDEX')) { exit("This file can only be included in index.php."); }
 
 // returns addres of current domain and saves to $_SERVER['HTTP_HOST']
 function get_domain(): string {

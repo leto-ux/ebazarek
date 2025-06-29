@@ -1,12 +1,14 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 ini_set( 'display_errors', 1 );
 error_reporting( E_ALL );
 
 define( "IN_INDEX", true );
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 include( "config.php" );
 include( "helpers.php" );
@@ -31,7 +33,7 @@ if( isset( $_POST['login'] ) && isset( $_POST['password'] )){
     }
 }
 
-$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'panel', 'error' ];
+$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'panel', 'offer', 'error' ];
 
 if( isset( $_GET['page'])
     && $_GET['page'] )

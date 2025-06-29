@@ -6,7 +6,6 @@
 #    volumes:
 #      - ./website:/usr/share/nginx/html:ro
 #
-version: "3.8"
 
 services:
   php:

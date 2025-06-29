@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="card bg-dark text-light shadow-lg">
+        <div class="row g-0">
+            <!-- Obrazek -->
+            <div class="col-md-5 d-flex align-items-center justify-content-center bg-light">
+                <img src="/uploads/{{ offer.photo_path | e('html_attr') }}"
+                    alt="{{ offer.title | e('html_attr') }}"
+                    class="img-fluid p-3"
+                    style="max-height: 400px; object-fit: contain;"
+                    onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300.png?text=Brak+Zdjęcia';">
+            </div>
+
+            <!-- Dane oferty -->
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">{{ offer.title | e }}</h2>
+
+                    <p class="card-text mt-3">
+                        {{ offer.description | e }}
+                    </p>
+
+                    <p class="mt-4 fs-5">
+                        <strong>Kategoria:</strong> {{ offer.category | e }}
+                    </p>
+
+                    <p class="fs-4 fw-bold text-success">
+                        Cena: {{ offer.price | e }} LTC
+                    </p>
+                    <a href="/buy/{{ offer.OfferID }}" class="btn btn-success mt-3">
+                        <i class="bi bi-cart-plus"></i> Kup teraz
+                    </a>
+                    {% if offer.subwallet %}
+                    <p class="text-muted mt-3">
+                        Subwallet: <code>{{ offer.subwallet | e }}</code>
+                    </p>
+                    {% endif %}
+
+                    <a href="/offers" class="btn btn-outline-primary mt-4">← Powrót do ofert</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,7 +1,61 @@
 {% extends "base.html" %}
 
-{% block content %}
+    {% block content %}
 
-<h1> Sklep </h1>
+<div class="container mt-4">
+    <div class="row">
+        <!-- ========== LEFT SIDEBAR FOR FILTERS ========== -->
+        <aside class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filtry</h5>
+                    <hr>
+                    <!-- Filter placeholders -->
+                    <h6>Kategoria</h6>
+                    <p class="text-muted small">Już wkrótce...</p>
+                    <h6>Cena</h6>
+                    <p class="text-muted small">Już wkrótce...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ========== MAIN GRID FOR OFFERS ========== -->
+        <main class="col-lg-9">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {# Loop through the 'offers' array passed from offers.php #}
+                {% for offer in offers %}
+
+
+                <div class="col">
+                    <div class="card h-100 offer-card">
+                        <a href="/offer/{{ offer.OfferID }}" class="stretched-link"></a>
+                        <img src="./uploads/{{ offer.photo_path | e('html_attr') }}"
+                            class="card-img-top"
+                            alt="{{ offer.title | e('html_attr') }}"
+                            onerror="this.onerror=null;this.src='https://via.placeholder.com/400x280.png?text=Brak+Zdjęcia';">
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ offer.title | e }}</h5>
+                            <p class="card-text offer-card-description">{{ offer.description | e }}</p>
+                            <p class="card-text mt-auto">{{ offer.price | e }} LTC</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% else %}
+                {# This block is shown if the 'offers' array is empty #}
+<div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <br>
+                            <h5 class="card-title">Nie znaleziono żadnych ofert.</h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</div>
 
 {% endblock %}
