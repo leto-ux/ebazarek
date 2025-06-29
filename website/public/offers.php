@@ -6,7 +6,7 @@ if( !defined('IN_INDEX')){
     include( 'index.php' );
 }
 
-$stmt = DB :: getInstance() -> prepare( "SELECT OfferID, title, description, category, photo_path, price, subwallet FROM Offers WHERE status='active' ORDER BY OfferID" );
+$stmt = DB :: getInstance() -> prepare( "SELECT OfferID, title, description, category, photo_path, price, subwallet FROM Offers WHERE status='active' ORDER BY OfferID desc" );
 $stmt -> execute();
 $offers = $stmt -> fetchAll();
 

@@ -45,52 +45,51 @@
                         </ul>
 
                         <div class="ms-auto d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
-                        {% if _session.id %}
+                            {% if _session.id %}
                             <div class="d-flex align-items-center">
                                 <span>Witaj {{ _session.login }}!</span>
+                                    </div>
+<div> <a href="/logout">
+<button class="btn btn-info" type="submit" style="width: 120px;">Wyloguj się</button>
+</a> </div>
+{% else %}
+                                    <form action="/" method="POST" class="d-flex flex-column flex-sm-row gap-2">
+                                        <div>
+                                            <input type="text" name="login" class="form-control" placeholder="Login"
+                                                aria-label="login" style="width: 170px;">
+                                        </div>
+                                        <div>
+                                            <input type="password" name="password" class="form-control" placeholder="Hasło"
+                                                aria-label="password" style="width: 170px;">
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-info" type="submit" style="width: 120px;">Zaloguj się</button>
+                                        </div>
+                                    </form>
+                                    {% endif %}
                             </div>
-                            <div> <a href="/logout">
-                                <button class="btn btn-info" type="submit" style="width: 120px;">Wyloguj się</button>
-                            </a> </div>
-                        {% else %}
-                            <form action="/" method="POST" class="d-flex flex-column flex-sm-row gap-2">
-                                <div>
-                                    <input type="text" name="login" class="form-control" placeholder="Login"
-                                        aria-label="login" style="width: 170px;">
-                                </div>
-                                <div>
-                                    <input type="password" name="password" class="form-control" placeholder="Hasło"
-                                        aria-label="password" style="width: 170px;">
-                                </div>
-                                <div>
-                                    <button class="btn btn-info" type="submit" style="width: 120px;">Zaloguj się</button>
-                                </div>
-                            </form>
-                        {% endif %}
                         </div>
                     </div>
-                </div>
             </nav>
             <!-- <button id="toggle_theme"> Zmień motyw </button>
 <script src="/js/toggle_theme.js"></script> -->
-            <div class="container mb-5" >
 
-                {% for msg in get_msg() %}
-                <div id="alerts">
-                    {% if msg.type == 'success' %}
-                    <div class="alert alert-success">{{ msg.text }}</div>
-                    {% elseif msg.type == 'error' %}
-                    <div class="alert alert-danger">{{ msg.text }}</div>
-                    {% else %}
-                    <div class="alert alert-primary">{{ msg.text }}</div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-                {% block content %}{% endblock %}
+            {% for msg in get_msg() %}
+            <div class="container mb-3">
+                {% if msg.type == 'success' %}
+                <div class="alert alert-success">{{ msg.text }}</div>
+                {% elseif msg.type == 'error' %}
+                <div class="alert alert-danger">{{ msg.text }}</div>
+                {% else %}
+                <div class="alert alert-primary">{{ msg.text }}</div>
+                {% endif %}
             </div>
-        </main>
+            {% endfor %}
+            {% block content %}{% endblock %}
+
+</main>
         <footer class="footer py-3" style="background-color: #213769" >
-            <div class="container">
+            <div class="container" style="text-align: center;">
                 <span class="text-muted" style="color: #eeddcc">
                     WWW i Języki Skryptowe - eBazarek - Wykonali M.Kołodziej i D.Stasielak
                 </span>

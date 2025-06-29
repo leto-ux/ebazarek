@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container mt-5 mb-5">
+<div class="container mt-5 mb-5 overflow-hidden">
     <div class="card bg-dark text-light shadow-lg">
         <div class="row g-0">
             <!-- Obrazek -->
-            <div class="col-md-5 d-flex align-items-center justify-content-center bg-light">
+            <div class="col-md-5 d-flex align-items-center justify-content-center bg-dark">
                 <img src="/uploads/{{ offer.photo_path | e('html_attr') }}"
                     alt="{{ offer.title | e('html_attr') }}"
                     class="img-fluid p-3"

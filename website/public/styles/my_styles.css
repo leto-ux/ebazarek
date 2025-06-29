@@ -4,7 +4,7 @@ html, body {
     color: #e5e5e5;
     background-color: #212121;
 }
-
+body { overflow-x: hidden; }
 .footer {
     background-color: #213769;
     color: white;
@@ -128,4 +128,15 @@ html, body {
 }
 .row > .col > .card {
     flex: 1 1 auto;
+}
+
+.card-body {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.card-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
