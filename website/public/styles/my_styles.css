@@ -68,3 +68,18 @@ html, body {
 .fixed-height-description {
     min-height: 4.5rem;
 }
+
+
+/* Ustal minimalną wysokość card-body tylko na większych ekranach */
+@media (min-width: 768px) {
+    .card-body {
+        min-height: 150px;
+    }
+}
+
+/* Upewnij się, że karty i ich zawartość mają pełną wysokość */
+.card,
+.card .row,
+.card .col-md-8 {
+    height: 100%;
+}
