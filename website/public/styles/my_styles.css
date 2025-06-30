@@ -6,6 +6,7 @@ html, body {
 }
 body { overflow-x: hidden; }
 .footer {
+    margin-top: 10px;
     background-color: #213769;
     color: white;
     text-align: center;
