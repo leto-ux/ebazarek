@@ -29,16 +29,19 @@
                     <p class="fs-4 fw-bold text-success">
                         Cena: {{ offer.price | e }} LTC
                     </p>
+                    {% if offer.status == 'active' %}
                     <a href="/buy/{{ offer.OfferID }}" class="btn btn-success mt-3">
                         <i class="bi bi-cart-plus"></i> Kup teraz
+                    </a><br>
+                    <a href="/offers" class="btn btn-outline-primary mt-4">← Powrót do ofert</a>
+                    {% else %}
+                    <p> Niestety ktoś już to ogląda, spróbuj później to kupić </p>
+                    <a href="/offers" class="btn btn-success mt-3">
+                        <i class="bi bi-cart-plus"></i> Wróc do ofert
                     </a>
-                    {% if offer.subwallet %}
-                    <p class="text-muted mt-3">
-                        Subwallet: <code>{{ offer.subwallet | e }}</code>
-                    </p>
+
                     {% endif %}
 
-                    <a href="/offers" class="btn btn-outline-primary mt-4">← Powrót do ofert</a>
                 </div>
             </div>
         </div>

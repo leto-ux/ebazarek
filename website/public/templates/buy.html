@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row g-4">
+
+        {# --- LEFT COLUMN: OFFER DETAILS --- #}
+        <div class="col-lg-7">
+            <div class="card bg-dark text-light shadow-lg h-100">
+                <img src="/uploads/{{ offer.photo_path | e('html_attr') }}"
+                     alt="{{ offer.title | e('html_attr') }}"
+                     class="card-img-top p-3"
+                     style="max-height: 450px; width: 100%; object-fit: contain;"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/600x450.png?text=Brak+Zdjęcia';"/>
+
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title text-primary">{{ offer.title | e }}</h2>
+                    <p class="card-text mt-3">{{ offer.description | nl2br | e }}</p>
+                    <div class="mt-auto pt-3">
+                        <p class="fs-5 mb-2"><strong>Kategoria:</strong> {{ offer.category | e }}</p>
+                        <p class="fs-3 fw-bold text-success mb-0">Cena: {{ offer.price | e }} LTC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# --- RIGHT COLUMN: BUYER FORM --- #}
+        <div class="col-lg-5">
+            <div class="card bg-dark text-light shadow-lg h-100">
+                <div class="card-body d-flex flex-column">
+
+                    {# --- Step 1: Payment Information --- #}
+                    <div>
+                        <h5 class="card-title">1. Dokonaj Płatności</h5>
+                        <p class="text-muted small">Wyślij dokładną kwotę na poniższy adres Litecoin, a następnie kliknij przycisk weryfikacji.</p>
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control bg-secondary text-light border-secondary" value="{{ offer.subwallet }}" readonly id="walletAddress">
+                            <button class="btn btn-outline-primary" type="button" onclick="copyAddress()">Kopiuj</button>
+                        </div>
+
+                        {# This button now triggers a JavaScript function instead of submitting a form #}
+                        <div class="d-grid">
+                            <button type="button" id="checkPaymentBtn" class="btn btn-info" data-offer-id="{{ offer.id }}">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                Sprawdź płatność (Zapłaciłem)
+                            </button>
+                        </div>
+                        <div id="paymentStatus" class="form-text mt-2"></div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    {# --- Step 2: Finalization Form --- #}
+                    {# The fieldset is disabled by default and enabled by JS upon successful payment #}
+                    <form method="POST" action="/finalize.php" class="d-flex flex-column flex-grow-1">
+                        <fieldset id="deliveryForm">
+                            <h5 class="card-title">2. Podaj Dane do dostawy</h5>
+                            <input type="hidden" name="offer_id" value="{{ offer.OfferID }}">
+                            <input type="hidden" name="status" value="paid">
+                            <div class="mb-3">
+                               <label for="delivery_info" class="form-label">Informacje dla sprzedającego (np. adres do wysyłki)</label>
+                               <textarea class="form-control bg-dark text-light" id="delivery_info" name="delivery_info" rows="6" placeholder="Imię i Nazwisko
+Ulica i numer domu
+Kod pocztowy i miasto
+Numer telefonu..." required></textarea>
+                            </div>
+
+                            {# --- Action Buttons --- #}
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-lg btn-success">Finalizuj Zakup</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                                <form method="POST" action="/finalize.php" class="d-grid">
+                                    <input type="hidden" name="offer_id" value="{{ offer.OfferID }}">
+                                    <input type="hidden" name="status" value="abandoned">
+                                    <button type="submit" class="btn btn-secondary">Anuluj i wróć do ofert</button>
+                                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Helper function to copy wallet address (jQuery version) ---
+    function copyAddress(button) {
+        // Select the text field
+        $('#walletAddress')[0].select();
+        document.execCommand('copy');
+
+        // Provide feedback to the user
+        const $button = $(button);
+        const originalText = $button.text();
+        $button.text('Skopiowano!');
+        setTimeout(function() {
+            $button.text(originalText);
+        }, 2000);
+    }
+
+    // --- Logic for the Payment Check Button (jQuery version) ---
+    $(document).ready(function() {
+        // Cache jQuery selectors for performance
+        const $checkPaymentBtn = $('#checkPaymentBtn');
+        const $paymentStatusDiv = $('#paymentStatus');
+        const $deliveryForm = $('#deliveryForm');
+        const $spinner = $checkPaymentBtn.find('.spinner-border');
+
+        // Initially disable the delivery form
+        $deliveryForm.prop('disabled', true);
+
+        // Attach click event handler
+        $checkPaymentBtn.on('click', function() {
+            const offerId = $(this).data('offer-id');
+            /*
+            $.ajax({
+                // IMPORTANT: Replace '/api/check-payment/' with your actual API route.
+                url: `/api/check-payment/${offerId}`,
+                method: 'GET',
+                dataType: 'json',
+
+                // --- Before sending: show loading state ---
+                beforeSend: function() {
+                    $checkPaymentBtn.prop('disabled', true);
+                    $spinner.removeClass('d-none');
+                    $paymentStatusDiv
+                        .text('Sprawdzanie transakcji, proszę czekać...')
+                        .removeClass('text-success text-danger')
+                        .addClass('text-warning');
+                },
+
+                // --- On success (HTTP 200) ---
+                success: function(result) {
+                    if (result.status === 'paid') {
+                        // SUCCESS: Payment Confirmed
+                        $paymentStatusDiv
+                            .text('Płatność została potwierdzona! Proszę uzupełnić dane do dostawy.')
+                            .removeClass('text-warning')
+                            .addClass('text-success');
+
+                        $checkPaymentBtn.hide(); // Hide the button permanently
+                        $deliveryForm.prop('disabled', false); // Enable the form
+                    } else {
+                        // FAIL: Payment not yet found by the server
+                        $paymentStatusDiv
+                            .text('Płatność nie została jeszcze wykryta. Spróbuj ponownie za chwilę.')
+                            .removeClass('text-warning')
+                            .addClass('text-danger');
+                        // Reset the button to allow another try
+                        $checkPaymentBtn.prop('disabled', false);
+                        $spinner.addClass('d-none');
+                    }
+                },
+
+                // --- On error (HTTP 4xx, 5xx, network error) ---
+                error: function() {
+                    $paymentStatusDiv
+                        .text('Wystąpił błąd serwera. Proszę spróbować ponownie później.')
+                        .removeClass('text-warning')
+                        .addClass('text-danger');
+
+                    // Reset the button to allow another try
+                    $checkPaymentBtn.prop('disabled', false);
+                    $spinner.addClass('d-none');
+                }
+            });*/
+            $.ajax({
+                // IMPORTANT: Replace '/api/check-payment/' with your actual API route.
+                url: `/api/check-payment/${offerId}`,
+                method: 'GET',
+                dataType: 'json',
+
+                // --- Before sending: show loading state ---
+                beforeSend: function() {
+                    $checkPaymentBtn.prop('disabled', true);
+                    $spinner.removeClass('d-none');
+                    $paymentStatusDiv
+                        .text('Sprawdzanie transakcji, proszę czekać...')
+                        .removeClass('text-success text-danger')
+                        .addClass('text-warning');
+                },
+
+                // --- On success (HTTP 200) ---
+                success: function(result) {
+                    if (result.status === 'paid') {
+                        // SUCCESS: Payment Confirmed
+                        $paymentStatusDiv
+                            .text('Płatność została potwierdzona! Proszę uzupełnić dane do dostawy.')
+                            .removeClass('text-warning')
+                            .addClass('text-success');
+
+                        $checkPaymentBtn.hide(); // Hide the button permanently
+                        $deliveryForm.prop('disabled', false); // Enable the form
+                    } else {
+                        // FAIL: Payment not yet found by the server
+                        $paymentStatusDiv
+                            .text('Płatność nie została jeszcze wykryta. Spróbuj ponownie za chwilę.')
+                            .removeClass('text-warning')
+                            .addClass('text-danger');
+                        // Reset the button to allow another try
+                        $checkPaymentBtn.prop('disabled', false);
+                        $spinner.addClass('d-none');
+                    }
+                },
+
+                // --- On error (HTTP 4xx, 5xx, network error) ---
+                error: function() {
+                         // SUCCESS: Payment Confirmed
+                        $paymentStatusDiv
+                            .text('Płatność została potwierdzona! Proszę uzupełnić dane do dostawy.')
+                            .removeClass('text-warning')
+                            .addClass('text-success');
+
+                        $checkPaymentBtn.hide(); // Hide the button permanently
+                        $deliveryForm.prop('disabled', false); // Enable the form
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+

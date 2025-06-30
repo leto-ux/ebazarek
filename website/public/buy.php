@@ -8,36 +8,30 @@ if (!defined('IN_INDEX')) {
     include( 'config.php' );
     include( 'helpers.php' );
 }
+
 $id = $_GET['id'] ?? null;
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
     print TwigHelper::getInstance() -> render( 'error.html', []);
     exit();
 }
 
-$stmt = DB::getInstance()->prepare("
-    UPDATE Offers
-    SET status = 'active'
-    WHERE OfferID = ?
-      AND status = 'pending'
-      AND modified IS NOT NULL
-      AND modified <= datetime('now', '-5 minutes')
-");
-$stmt->execute([$id]);
-
 $stmt = DB::getInstance()->prepare("SELECT * FROM Offers WHERE OfferID = ?");
 $stmt->execute([$id]);
 $offer = $stmt->fetch();
 
-if (!$offer || $offer['status'] !== 'active') {
+if ( !$offer || $offer['status'] !== 'active' ){
     print TwigHelper::getInstance() -> render( 'error.html', []);
     exit();
 }
 
-print TwigHelper::getInstance()->render('offer.html', [
+$stmt = DB::getInstance()->prepare("UPDATE Offers SET status = 'pending', modified = datetime('now') WHERE OfferID = ?");
+$stmt -> execute([$id]);
+
+
+print TwigHelper::getInstance()->render('buy.html', [
     'offer' => $offer
 ]);
-
-
-
 ?>
