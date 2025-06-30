@@ -27,7 +27,7 @@ services:
       - php
 
   composer:
-    image: composer:latest 
+    image: composer:latest
     working_dir: /app
     volumes:
       - .website:/app
