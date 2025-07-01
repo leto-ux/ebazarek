@@ -64,13 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // echo shell_exec($cmd);
                         // echo "kys";
                         $ltx_get_new_address = shell_exec('../bin/ltx --getnewaddress 2>&1'); // redirecting err to stdout to see whats going on
-                        // echo "<pre>$ltx_get_new_address</pre>";
+                        echo "<pre>$ltx_get_new_address</pre>";
 
                         // Debug: Show the raw value to verify functionality
-                        echo "Debug - Raw ltx_get_new_address: '" . $ltx_get_new_address . "'<br>";
-                        echo "Debug - Length: " . strlen($ltx_get_new_address) . "<br>";
-                        echo "Debug - Trimmed: '" . trim($ltx_get_new_address) . "'<br>";
-
                         // Check if it looks like a valid tltc address
                         // if (preg_match('/^tltc[a-z0-9]{20,}$/i', $ltx_raw_output)) {
                         //     $newaddress = $ltx_raw_output;
