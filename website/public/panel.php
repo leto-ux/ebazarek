@@ -58,23 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             VALUES (:userid, :title, :description, :category, :photo, :price, :subwallet, :status)"
                         );
 
-                        // $ltx_path = __DIR__ . '/../bin/ltx';
-                        // $cmd = escapeshellcmd("$ltx_path --getnewaddress");
-                        // // $ltx_raw_output = trim(shell_exec($cmd));
-                        // echo shell_exec($cmd);
-                        // echo "kys";
-                        $ltx_get_new_address = shell_exec('../bin/ltx --getnewaddress 2>&1'); // redirecting err to stdout to see whats going on
-                        echo "<pre>$ltx_get_new_address</pre>";
+                        $ltx_raw_output = shell_exec('../bin/ltx --getnewaddress 2>&1'); // redirecting err to stdout to see whats going on
 
-                        // Debug: Show the raw value to verify functionality
-                        // Check if it looks like a valid tltc address
-                        // if (preg_match('/^tltc[a-z0-9]{20,}$/i', $ltx_raw_output)) {
-                        //     $newaddress = $ltx_raw_output;
-                        // } else {
-                        //     TwigHelper::addMsg('Błąd podczas generowania adresu przez ltx.', 'error');
-                        //     header("Location: /panel");
-                        //     exit;
-                        // }
+                        if (preg_match('/^tltc[a-z0-9]{20,}$/i', $ltx_raw_output)) {
+                            $newaddress = $ltx_raw_output;
+                        } else {
+                            TwigHelper::addMsg('Error generating an address', 'error');
+                            header("Location: /panel");
+                            exit;
+                        }
 
                         $stmt->execute([
                             ':userid'     => $_SESSION['id'],
@@ -83,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ':category'   => $category,
                             ':photo'      => $new_filename, // Use the new, safe filename
                             ':price'      => $price,
-                            ':subwallet'  => $ltx_get_new_address, // Placeholder
+                            ':subwallet'  => $newaddress, // Placeholder
                             ':status'     => 'active'
                         ]);
 
