@@ -33,7 +33,10 @@
                                         <div class="input-group">
                                             <input type="number"
                                             class="form-control" id="price"
-                                            name="price" required step="0.0001" min="0" value="{{ offer.price }}">
+                                            name="price" required
+                                            {# why the fuck wasn't this set at
+                                            one litoshi earlier idk #}
+                                            step="0.00000001" min="0" value="{{ offer.price }}">
                                             <span class="input-group-text">LTC</span>
                                         </div>
                                     </div>
