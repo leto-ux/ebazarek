@@ -17,7 +17,14 @@ if( isset($_POST['oid']) && isset($_POST['txid']) ){
     $stmt->execute([$_POST['oid']]);
     $offer = $stmt->fetch();
 
-    $verification_success = True;
+    // $verification_success = True;
+    // $verification_success = ($offer && $offer['status'] === 'paid');
+    // I LOVE HOW SIMPLE THIS WAS
+    $verification_success = (
+        $offer &&
+        $offer['status'] === 'paid' &&
+        hash_equals($offer['txid'], $_POST['txid'])
+    );
 
     if( $verification_success ){
         $stmt = DB::getInstance()->prepare("UPDATE Offers SET status = 'delivered' WHERE OfferID = ?");
