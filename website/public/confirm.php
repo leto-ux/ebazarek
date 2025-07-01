@@ -55,7 +55,7 @@ if( isset($_POST['oid']) && isset($_POST['txid']) ){
         $offerPrice = $stmt->fetch();
         $price = $offerPrice['price'];
 
-        shell_exec("/var/www/website/bin/ltx --sendtoaddresstax $address $price");
+        shell_exec("/var/www/website/bin/ltx --sendtoaddresstax $address $price 0.0");
         $stmt = DB::getInstance()->prepare("DELETE FROM Offers WHERE OfferID = ?");
         $stmt->execute([$_GET['id']]);
 
