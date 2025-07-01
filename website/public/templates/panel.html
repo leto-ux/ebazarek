@@ -9,7 +9,7 @@
 
         <div class="row">
 
-            <div class="col-lg-7" style="margin-bottom:15px;">
+            <div class="col-lg-7" style="max-height:650px;">
                 <h3>Dodaj nową ofertę</h3>
                 <div class="card bg-dark mt-3">
                     <div class="card-body">
@@ -91,16 +91,32 @@
                                         <h5 class="card-title">{{ offer.title }}</h5>
                                         <p class="card-text text-muted truncate-description fixed-height-description">{{ offer.description }}</p>
                                     </div>
-
+                                    {% if offer.status != 'paid' and offer.status != 'delivered' %}
                                     <!-- Cena + przyciski -->
                                     <div class="mt-3 d-flex justify-content-between align-items-end">
                                         <strong class="text-success h5">{{ offer.price }} LTC</strong>
                                         <div>
-                                            <a href="/offer/edit/{{ offer.OfferID }}" class="btn btn-sm btn-secondary me-1">Edytuj</a>
-                                            <a href="/offer/delete/{{ offer.OfferID }}" class="btn btn-sm btn-danger">Usuń</a>
+                                            <a href="/edit/{{ offer.OfferID }}" class="btn btn-sm btn-secondary me-1">Edytuj</a>
+                                            <a href="/delete/{{ offer.OfferID }}" class="btn btn-sm btn-danger">Usuń</a>
                                         </div>
                                     </div>
-
+                                    {% elseif offer.status == 'paid' %}
+                                    <!-- Oferta kupiona -->
+                                    <div class="mt-3">
+                                        <p class="text-primary fw-semibold">Oferta kupiona, szczegóły poniżej:</p>
+                                        <div class="bg-light p-2 rounded border">
+                                            {{ offer.delivery }}
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <!-- Odbiór potwierdzony, wypłać -->
+                                    <div class="mt-3">
+                                        <p class="text-success fw-semibold">Odbiór potwierdzony!</p>
+                                        <a href="/offer/withdraw/{{ offer.OfferID }}" class="btn btn-success">
+                                            Odbiór potwierdzony, kliknij żeby odebrać pieniądze
+                                        </a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
 

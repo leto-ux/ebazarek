@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+    {% block content %}
+<div class="container">
+    <div class="mt-4">
+        <h1 class="display-5">Edytuj Ofertę "{{offer.title}}"</h1>
+        <hr class="my-4">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card bg-dark mt-3">
+                    <div class="card-body">
+                        {# The form submits back to the same URL to be handled by the POST logic in edit.php #}
+                        <form action="/edit/{{ offer.OfferID }}" method="POST" enctype="multipart/form-data">
+
+                            {# Hidden input to keep track of the old photo in case a new one is uploaded #}
+                            <input type="hidden" name="old_photo_path" value="{{ offer.photo_path }}">
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Tytuł oferty</label>
+                                <input type="text" class="form-control" id="title" name="title" required value="{{ offer.title }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Opis</label>
+                                <textarea class="form-control" id="description" name="description" rows="5" required>{{ offer.description }}</textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Cena</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="price" name="price" required step="0.01" min="0" value="{{ offer.price }}">
+                                            <span class="input-group-text">LTC</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="category" class="form-label">Kategoria</label>
+                                        <select class="form-select" id="category" name="category_id" required>
+                                            <option value="" disabled>Wybierz kategorię...</option>
+                                            {# Loop through categories and select the one that matches the offer's category #}
+                                            <option value="1" {% if offer.category == 1 %}selected{% endif %}>Elektronika</option>
+                                            <option value="2" {% if offer.category == 2 %}selected{% endif %}>Moda</option>
+                                            <option value="3" {% if offer.category == 3 %}selected{% endif %}>Dom i Ogród</option>
+                                            <option value="4" {% if offer.category == 4 %}selected{% endif %}>Motoryzacja</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Zmień zdjęcie produktu (opcjonalnie)</label>
+                                    <label for="image-upload-input" id="image-preview-container">
+
+                                        {# QUICK FIX APPLIED HERE #}
+                                        <img id="image-preview"
+                                            src="/uploads/{{ offer.photo_path }}"
+                                            alt="Podgląd obrazu"
+                                            style="display: block; max-width: 100%; max-height: 250px; object-fit: contain;" />
+
+                                        <span id="preview-placeholder" style="display: none;">Kliknij, aby wybrać zdjęcie</span>
+                                    </label>
+                                    <input type="file" id="image-upload-input" name="photo" accept="image/png, image/jpeg, image/webp">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Zapisz Zmiany</button>
+                            <a href="/panel" class="btn btn-secondary w-100 mt-2">Anuluj</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Make sure you include your image preview JavaScript file here as well -->
+<script src="/js/imgprev.js"></script>
+
+{% endblock %}

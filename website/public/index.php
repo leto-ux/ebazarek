@@ -33,7 +33,7 @@ if( isset( $_POST['login'] ) && isset( $_POST['password'] )){
     }
 }
 
-$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'panel', 'offer', 'buy', 'error' ];
+$allowed_pages = [ 'home', 'offers', 'about', 'opinions', 'logout', 'panel', 'offer', 'buy', 'edit', 'delete', 'error' ];
 
 if( isset( $_GET['page'])
     && $_GET['page'] )
