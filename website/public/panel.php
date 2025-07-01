@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $ltx_raw_output = shell_exec('../bin/ltx --getnewaddress 2>&1'); // redirecting err to stdout to see whats going on
 
                         if (preg_match('/^tltc[a-z0-9]{20,}$/i', $ltx_raw_output)) {
-                            $newaddress = $ltx_raw_output;
+                            $newaddress = trim($ltx_raw_output);
                         } else {
                             TwigHelper::addMsg('Error generating an address', 'error');
                             header("Location: /panel");
