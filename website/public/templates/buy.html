@@ -41,7 +41,7 @@
 
                         {# This button now triggers a JavaScript function instead of submitting a form #}
                         <div class="d-grid">
-                            <button type="button" id="checkPaymentBtn" class="btn btn-info" data-offer-id="{{ offer.id }}">
+                            <button type="button" id="checkPaymentBtn" class="btn btn-info" data-offer-id="{{ offer.OfferID }}">
                                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 Sprawdź płatność (Zapłaciłem)
                             </button>
@@ -118,7 +118,7 @@ Numer telefonu..." required></textarea>
             // ojciec pijo teraz tu gtotuje
 
             $.ajax({
-                url: `/api/check_payment.php?offerId=${offerId}`,
+                url: `/check_payment.php?offerId=${offerId}`,
                 method: 'GET',
                 dataType: 'json',
 
@@ -171,5 +171,3 @@ Numer telefonu..." required></textarea>
     });
 </script>
 {% endblock %}
-
-
