@@ -30,3 +30,9 @@ COPY website/config/litecoin.conf /var/www/website/config/
 COPY website/bin/ltx/ /var/www/website/bin
 
 RUN chmod a+x /var/www/website/bin/ltx
+
+# setup the god forsaken permissions ZXXXDDDD YEAH DOCKER CANT FUCKING FIND THE
+# DIRECTORY FASCINATING FUCK THIS SHIT
+# RUN chmod 775 /var/www/website/instance/bazabazarka.sqlite
+# RUN chown www-data:www-data /var/www/website/instance/bazabazarka.sqlite
+# RUN chmod -R 766 /var/www/website/public/uploads
