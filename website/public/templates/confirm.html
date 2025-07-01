@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+{% if flag == 'after_confirmation' %}
+<h1 class="display-5">Odbiór został potwierdzony, dziękujemy</h1>
+{% elseif flag == 'after_receiving' %}
+<h1 class="display-5">Pieniążki za przesyłkę już do ciebie poszły</h1>
+{% else %}
+    <h1 class="display-5">Potwierdzenie odbioru przesyłki</h1>
+    {% if msg %}
+        <div class="alert alert-{{ msg.type }}">
+            {{ msg.text }}
+        </div>
+    {% endif %}
+
+    <form action="/confirm" method="POST">
+        <div class="mb-3">
+            <h5 class="card-title"> ID oferty: </h5>
+            <input type="text" class="form-control" id="oid" name="oid" required placeholder="Podaj ID oferty">
+        </div>
+        <div class="mb-3">
+            <h5 class="card-title"> Hash transakcji (TXID): </h5>
+            <input type="text" class="form-control" id="txid" name="txid" required placeholder="Podaj hash transakcji Litecoin">
+        </div>
+
+
+        <input type="hidden" name="offer_id" value="{{ offer.id }}">
+
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Potwierdź odbiór
+        </button>
+    </form>
+
+    <hr>
+
+    <p class="text-muted small mt-3">
+        Podaj identyfikator transakcji (TXID) z portfela, z którego dokonałeś płatności oraz identyfikator oferty. Dane zostaną zweryfikowane automatycznie w sieci Litecoin.
+    </p>
+{% endif %}
+</div>
+{% endblock %}
