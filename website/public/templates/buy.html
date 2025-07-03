@@ -41,7 +41,7 @@
 
                         {# This button now triggers a JavaScript function instead of submitting a form #}
                         <div class="d-grid">
-                            <button type="button" id="checkPaymentBtn" class="btn btn-info" data-offer-id="{{ offer.id }}">
+                            <button type="button" id="checkPaymentBtn" class="btn btn-info" data-offer-id="{{ offer.OfferID }}">
                                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 Sprawdź płatność (Zapłaciłem)
                             </button>
@@ -114,10 +114,11 @@ Numer telefonu..." required></textarea>
         // Attach click event handler
         $checkPaymentBtn.on('click', function() {
             const offerId = $(this).data('offer-id');
-            /*
+
+            // ojciec pijo teraz tu gtotuje
+
             $.ajax({
-                // IMPORTANT: Replace '/api/check-payment/' with your actual API route.
-                url: `/api/check-payment/${offerId}`,
+                url: `/check_payment.php?offerId=${offerId}`,
                 method: 'GET',
                 dataType: 'json',
 
@@ -165,61 +166,8 @@ Numer telefonu..." required></textarea>
                     $checkPaymentBtn.prop('disabled', false);
                     $spinner.addClass('d-none');
                 }
-            });*/
-            $.ajax({
-                // IMPORTANT: Replace '/api/check-payment/' with your actual API route.
-                url: `/api/check-payment/${offerId}`,
-                method: 'GET',
-                dataType: 'json',
-
-                // --- Before sending: show loading state ---
-                beforeSend: function() {
-                    $checkPaymentBtn.prop('disabled', true);
-                    $spinner.removeClass('d-none');
-                    $paymentStatusDiv
-                        .text('Sprawdzanie transakcji, proszę czekać...')
-                        .removeClass('text-success text-danger')
-                        .addClass('text-warning');
-                },
-
-                // --- On success (HTTP 200) ---
-                success: function(result) {
-                    if (result.status === 'paid') {
-                        // SUCCESS: Payment Confirmed
-                        $paymentStatusDiv
-                            .text('Płatność została potwierdzona! Proszę uzupełnić dane do dostawy.')
-                            .removeClass('text-warning')
-                            .addClass('text-success');
-
-                        $checkPaymentBtn.hide(); // Hide the button permanently
-                        $deliveryForm.prop('disabled', false); // Enable the form
-                    } else {
-                        // FAIL: Payment not yet found by the server
-                        $paymentStatusDiv
-                            .text('Płatność nie została jeszcze wykryta. Spróbuj ponownie za chwilę.')
-                            .removeClass('text-warning')
-                            .addClass('text-danger');
-                        // Reset the button to allow another try
-                        $checkPaymentBtn.prop('disabled', false);
-                        $spinner.addClass('d-none');
-                    }
-                },
-
-                // --- On error (HTTP 4xx, 5xx, network error) ---
-                error: function() {
-                         // SUCCESS: Payment Confirmed
-                        $paymentStatusDiv
-                            .text('Płatność została potwierdzona! Proszę uzupełnić dane do dostawy.')
-                            .removeClass('text-warning')
-                            .addClass('text-success');
-
-                        $checkPaymentBtn.hide(); // Hide the button permanently
-                        $deliveryForm.prop('disabled', false); // Enable the form
-                }
             });
         });
     });
 </script>
 {% endblock %}
-
-
